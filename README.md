@@ -78,6 +78,8 @@ Description of the error.
 
 * v1.0  
   * initial version
+* v1.1
+  * modified repo
 
 ##ABOUT THE AUTHOR
 Cool Elephant is a front to back end system integration company with a special focus on mobile application design, development and integration. Titanium Appcelerator is one of our specialities!
