@@ -11,6 +11,14 @@ This current version create a STP View object, I'll wrap in the iOS Bindings in 
 
 <img src="images/demo.png" />
 
+## Quick Start
+
+### Get it [![gitTio](http://gitt.io/badge.png)](http://gitt.io/component/co.coolelephant.stripe)
+Download the latest distribution ZIP-file and consult the [Titanium Documentation](http://docs.appcelerator.com/titanium/latest/#!/guide/Using_a_Module) on how install it, or simply use the [gitTio CLI](http://gitt.io/cli):
+
+`$ gittio install co.coolelephant.stripe`
+
+
 ### Usage
 
 	var CEStripeIOS = require('co.coolelephant.stripe');
