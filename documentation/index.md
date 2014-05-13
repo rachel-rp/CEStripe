@@ -9,7 +9,7 @@ This current version create a STP View object, I'll wrap in the iOS Bindings in 
 
 **iOS only** at the moment.
 
-<img src="images/demo.png" />
+<img src="../images/demo.png" />
 
 ## Quick Start
 
