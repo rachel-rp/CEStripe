@@ -6,74 +6,81 @@
  */
 
 #import "CoCoolelephantStripeView.h"
+#import "STPCard.h"
+#import "Stripe.h"
 
 @implementation CoCoolelephantStripeView
 
 
--(STPView*) stripeView
+-(PTKView*) stripeView
 {
-    if( stripeView == nil )
+    if( !_stripeView)
     {
         //NSLog(@"INITIALIZING VIEW %@",[self frame]);
-        stripeView = [[STPView alloc] initWithFrame:[self frame]];
+        _stripeView = [[PTKView alloc] initWithFrame:[self frame]];
         
-        [self addSubview:stripeView];
-        [stripeView setDelegate:self];
+        [self addSubview:_stripeView];
+        
+        [_stripeView setDelegate:self];
         
     }
-    return stripeView;
+     //NSLog(@"INITIALIZING VIEW2 %@",[self frame]);
+    return _stripeView;
     
 }
 
 -(void)frameSizeChanged:(CGRect)frame bounds:(CGRect)bounds
 {
-    //NSLog(@"[VIEW LIFECYCLE EVENT] frameSizeChanged: %@", timePicker);
+    //NSLog(@"[VIEW LIFECYCLE EVENT] frameSizeChanged: %@", stripeView);
     
-    if (stripeView != nil) {
+    if (self.stripeView != nil) {
         
         // You must call the special method 'setView:positionRect' against
         // the TiUtils helper class. This method will correctly layout your
         // child view within the correct layout boundaries of the new bounds
         // of your view.
-        [TiUtils setView:stripeView positionRect:bounds];
+        [TiUtils setView:self.stripeView positionRect:bounds];
         
-        STPView *oldView = stripeView;
-        [stripeView removeFromSuperview];
-        stripeView = [[STPView alloc] initWithFrame:bounds andKey:oldView.key];
+        //PTKView *oldView = stripeView;
+        //stripeView removeFromSuperview];
+        //stripeView = [[PTKView alloc] initWithFrame:bounds];
         
-        [self addSubview:stripeView];
-        [stripeView setDelegate:self];
+        //[self addSubview:stripeView];
+        //[stripeView setDelegate:self];
+        
+        //[self.stripeView setFrame:bounds];
         
     }
-    
+    NSLog(@"[VIEW LIFECYCLE EVENT] frameSizeChanged2: %@", self.stripeView);
 }
 
-//Delegate method fired if the card is has a valid format
-- (void)stripeView:(STPView *)view withCard:(PKCard *)card isValid:(BOOL)valid
+
+- (void) paymentView:(PTKView *)paymentView withCard:(PTKCard *)card isValid:(BOOL)valid
 {
-    
-    //NSLog(@"isValid");
     
     if ([self.proxy _hasListeners:@"cardIsValid"])
     {
         // fire event
         [self.proxy fireEvent:@"cardIsValid" withObject:@{
-                                                    @"value":NUMBOOL(valid)
-                                                    }];
+                                                          @"value":NUMBOOL(valid)
+                                                          }];
     }
     
+    
 }
-
 
 -(void)setPaymentKey_:(id)key
 {
     paymentKey = [TiUtils stringValue:key];
-    [[self stripeView] setKey:paymentKey];
+    [Stripe setDefaultPublishableKey:paymentKey];
+    
+    //[[self stripeView] setKey:paymentKey];
 }
 
 
 - (void)createToken:(id)args
 {
+    /*
     [stripeView createToken:^(STPToken *token, NSError *error) {
         if (error) {
             [self hasError:error];
@@ -81,6 +88,23 @@
             [self hasToken:token];
         }
         
+    }];
+    */
+    if(![self.stripeView isValid]) {
+        return;
+    }
+    
+    STPCard *card = [[STPCard alloc] init];
+    card.number = [self.stripeView card].number;
+    card.expMonth = [self.stripeView card].expMonth;
+    card.expYear = [self.stripeView card].expYear;
+    card.cvc = [self.stripeView card].cvc;
+    [Stripe createTokenWithCard:card completion:^(STPToken *token, NSError *error) {
+        if (error) {
+            [self hasError:error];
+        } else {
+            [self hasToken:token];
+        }
     }];
 }
 

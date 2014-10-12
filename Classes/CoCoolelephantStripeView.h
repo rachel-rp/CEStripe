@@ -5,12 +5,12 @@
  * Please see the LICENSE included with this distribution for details.
  */
 #import "TiUIView.h"
-#import "STPView.h"
+#import "PTKView.h"
 
-@interface CoCoolelephantStripeView : TiUIView  <STPViewDelegate> {
+@interface CoCoolelephantStripeView : TiUIView  <PTKViewDelegate> {
     
-    STPView* stripeView;
+    //PTKView* stripeView;
     NSString* paymentKey;
 }
-
+@property (nonatomic) PTKView* stripeView;
 @end

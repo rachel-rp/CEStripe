@@ -88,6 +88,10 @@ Description of the error.
   * initial version
 * v1.1
   * modified repo
+* v1.2
+  * minor fixes
+* v1.2
+  * Updated to latest Stripe PaymentKit
 
 ##ABOUT THE AUTHOR
 Cool Elephant is a front to back end system integration company with a special focus on mobile application design, development and integration. Titanium Appcelerator is one of our specialities!
@@ -95,8 +99,6 @@ Cool Elephant is a front to back end system integration company with a special f
 web: [Cool Elephant](http://coolelephant.co.uk)  
 twitter: [@coolelephant](https://twitter.com/coolelephant)  
 email: trunk@coolelephant.co.uk
-
-Or you can email
 
 ## License
 
