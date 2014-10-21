@@ -51,7 +51,7 @@
         //[self.stripeView setFrame:bounds];
         
     }
-    NSLog(@"[VIEW LIFECYCLE EVENT] frameSizeChanged2: %@", self.stripeView);
+    //NSLog(@"[VIEW LIFECYCLE EVENT] frameSizeChanged2: %@", self.stripeView);
 }
 
 

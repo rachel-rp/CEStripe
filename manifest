@@ -2,7 +2,7 @@
 # this is your module manifest and used by Titanium
 # during compilation, packaging, distribution, etc.
 #
-version: 1.3
+version: 1.4
 apiversion: 2
 description: A view that allows you to grab the single use token for Stripe payments. This token then needs to be passed to your server side. Wraps the Stripe iOS SDK.
 author: Cool Elephant Ltd

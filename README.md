@@ -90,8 +90,10 @@ Description of the error.
   * modified repo
 * v1.2
   * minor fixes
-* v1.2
+* v1.3
   * Updated to latest Stripe PaymentKit
+* v1.4
+  * Fixed some missing image assets
 
 ##ABOUT THE AUTHOR
 Cool Elephant is a front to back end system integration company with a special focus on mobile application design, development and integration. Titanium Appcelerator is one of our specialities!
