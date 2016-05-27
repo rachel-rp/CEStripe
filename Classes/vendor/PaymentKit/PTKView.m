@@ -230,9 +230,10 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
                              [self.cardExpiryField removeFromSuperview];
                              [self.cardCVCField removeFromSuperview];
                          }];
+        [self.cardNumberField becomeFirstResponder];
     }
 
-    [self.cardNumberField becomeFirstResponder];
+    
 }
 
 - (void)stateMeta
@@ -428,29 +429,41 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     NSString *resultString = [self.cardNumberField.text stringByReplacingCharactersInRange:range withString:replacementString];
     resultString = [PTKTextField textByRemovingUselessSpacesFromString:resultString];
     PTKCardNumber *cardNumber = [PTKCardNumber cardNumberWithString:resultString];
-
-    if (![cardNumber isPartiallyValid])
+     
+    
+    if (![cardNumber isPartiallyValid]) {
+        // https://github.com/stripe/PaymentKit/issues/39
+        cardNumber = [PTKCardNumber cardNumberWithString:[PTKTextField textByRemovingUselessSpacesFromString:self.cardNumberField.text]];
+         
+        if ([cardNumber isValid]) {
+            [self textFieldIsValid:self.cardNumberField];
+            self.cardExpiryField.text = replacementString;
+            [self stateMeta];
+        }
+         
         return NO;
-
+    }
+     
     if (replacementString.length > 0) {
         self.cardNumberField.text = [cardNumber formattedStringWithTrail];
-    } else {
+    }
+    else {
         self.cardNumberField.text = [cardNumber formattedString];
     }
-
+     
     [self setPlaceholderToCardType];
-
+     
     if ([cardNumber isValid]) {
         [self textFieldIsValid:self.cardNumberField];
         [self stateMeta];
-
-    } else if ([cardNumber isValidLength] && ![cardNumber isValidLuhn]) {
+    }
+    else if ([cardNumber isValidLength] && ![cardNumber isValidLuhn]) {
         [self textFieldIsInvalid:self.cardNumberField withErrors:YES];
-
-    } else if (![cardNumber isValidLength]) {
+    }
+    else if (![cardNumber isValidLength]) {
         [self textFieldIsInvalid:self.cardNumberField withErrors:NO];
     }
-
+     
     return NO;
 }
 
@@ -460,11 +473,34 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     resultString = [PTKTextField textByRemovingUselessSpacesFromString:resultString];
     PTKCardExpiry *cardExpiry = [PTKCardExpiry cardExpiryWithString:resultString];
 
-    if (![cardExpiry isPartiallyValid]) return NO;
+    if (![cardExpiry isPartiallyValid]){
+        
+        cardExpiry = [PTKCardExpiry cardExpiryWithString:[PTKTextField textByRemovingUselessSpacesFromString:self.cardExpiryField.text]];
+         
+        if ([cardExpiry isValid]) {
+            //NSLog(@"expiry is valid");
+            [self textFieldIsValid:self.cardExpiryField];
+            
+            [self stateCardCVC];
+            self.cardCVCField.text = replacementString;
+        }
+        return NO;
+    }
 
     // Only support shorthand year
-    if ([cardExpiry formattedString].length > 5) return NO;
-
+    if ([cardExpiry formattedString].length > 5){
+        //NSLog(@"not only shorthand %@", self.cardExpiryField.text);
+        cardExpiry = [PTKCardExpiry cardExpiryWithString:[PTKTextField textByRemovingUselessSpacesFromString:self.cardExpiryField.text]];
+         
+        if ([cardExpiry isValid]) {
+            //NSLog(@"expiry is valid");
+            [self textFieldIsValid:self.cardExpiryField];
+            
+            [self stateCardCVC];
+            self.cardCVCField.text = replacementString;
+        }
+        return NO;
+    }
     if (replacementString.length > 0) {
         self.cardExpiryField.text = [cardExpiry formattedStringWithTrail];
     } else {
@@ -516,6 +552,7 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
 
         if ([self.delegate respondsToSelector:@selector(paymentView:withCard:isValid:)]) {
             [self.delegate paymentView:self withCard:self.card isValid:YES];
+            [self.cardCVCField resignFirstResponder];
         }
 
     } else if (![self isValid] && _isValidState) {

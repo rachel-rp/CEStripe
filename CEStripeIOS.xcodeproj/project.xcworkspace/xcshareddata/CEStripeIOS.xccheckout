@@ -14,11 +14,11 @@
 		<string>https://github.com/coolelephant/CEStripe.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>ios/CEStripeIOS.xcodeproj/project.xcworkspace</string>
+	<string>CEStripeIOS.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>D80309F6407809244C857A0FE8240BB516C1ACC0</key>
-		<string>../../..</string>
+		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/coolelephant/CEStripe.git</string>
